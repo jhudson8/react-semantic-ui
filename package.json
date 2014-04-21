@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "gulp-mocha-phantomjs": "*",
+    "mocha": "*",
+    "chai": "*",
+    "react-addons": "*",
+    "domino": "*",
+    "gulp-header": "*",
+    "gulp-footer": "*",
+    "gulp-watch": "*",
+    "gulp-util": "*",
+    "gulp-react": "*",
+    "gulp-concat": "*",
+    "gulp-watch": "*",
+    "through2": "*",
+    "run-sequence": "*",
+    "line-input-stream": "*",
+    "stream-buffers": "*"
+  },
+  "dependencies": {
+    "react": "*"
+  }
+}
