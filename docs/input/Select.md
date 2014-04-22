@@ -6,11 +6,23 @@ A [fancier control](./Dropdown.md) can be used as well.
 
 Properties
 ----------
-- type: the input type ("text" by default)
+- ***options***: the available options list (by default can be array of strings, or array of {value, label})
+- ***value***: the field value
+- ***name***: the field name
+
+*other component attributes will be copied to the input field attributes*
+
+*see additional properties from [Field Control](../form/Control.md)*
 
 Overrides
 ---------
-- *Additional properties can be set defined by the [field Control](../form/Control.md)*
-- valueAccessor: function used to retrieve the input field value
-- errorRenderer: function(error, children) used to apply error message
-- optionsRetriever: function(value) used to retrieve an array of available options [{value, label, selected}]
+- ***classNames.Select***: class name to be added to all
+- ***mixins.Select***: default mixins that should be applied
+```valueAccessor```, ```optionsRetriever```
+
+*see [overrides](./overrides.md)*
+
+Example
+--------
+     var Select = rsui.input.Select;
+     <Select label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>

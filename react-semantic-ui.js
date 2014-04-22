@@ -78,8 +78,12 @@ module.exports = {
     function _init() {
       for (var name in classData) {
         var data = classData[name];
-        if (!data.render) {
-          data.render = options.defaultRender;
+        if (options.defaults) {
+          for (var fName in options.defaults) {
+            if (!data[fName]) {
+              data[fName] = options.defaults[fName];
+            }
+          }
         }
         data.mixins = concat(data.mixins, mixins[name], mixins.all);
         exports[name] = React.createClass(data);
@@ -105,6 +109,10 @@ module.exports = {
   signatures: {
     Button: 'ui button',
     Form: 'ui form segment'
+  },
+
+  errorRenderer: function(error, children) {
+    children.push(React.DOM.div({className: 'ui red pointing top ui label'}, error));
   },
 
   // apply an icon to a button
@@ -202,13 +210,18 @@ var classData = {
    *
    * Properties
    * ----------
-   * - loading: true if the form is in a loading state
-   * - className: additional form class name ("ui form segment") will already be applied
+   * - ***loading***: true if the form is in a loading state
+   * - ***className***: additional form class name ("ui form segment") will already be applied
    *
    * Overrides
    * ---------
-   * - signatures.Form: the default form class ("ui form segment")
-   * - mixins.Form: default mixins that should be applied to the form
+   * - ***classNames.Form***: class name to be added to all; default is ```segment```
+   * - ***mixins.Form***: default mixins that should be applied
+   *
+   * Example
+   * --------
+   *     var Form = rsui.form.Form;
+   *     <Form className="my-class" loading={isLoading} onSubmit={handleSubmit}> ... </Form>
    ***/
   Form: {
     render: function() {
@@ -226,18 +239,25 @@ var classData = {
    *
    * Properties
    * ----------
-   * - id: the id used for the label (for attribute)
-   * - label: the field label
-   * - inlineLabel: true if the label should be included as a sibling to the nested content
-   * - labelAfter: true if the inline label should be applied as the last sibling
-   * - containerClass: the inner container element class name
-   * - className: the outer field element class name
-   * - disabled: true if the field should render as disabled
-   * - loading: true if the field should render as loading
+   * - ***id***: the id used for the label (for attribute)
+   * - ***label***: the field label
+   * - ***inlineLabel***: true if the label should be included as a sibling to the nested content
+   * - ***labelAfter***: true if the inline label should be applied as the last sibling
+   * - ***containerClass***: the inner container element class name
+   * - ***className***: the outer field element class name
+   * - ***disabled***: true if the field should render as disabled
+   * - ***loading***: true if the field should render as loading
    *
    * Overrides
    * ---------
-   * - fieldRenderer: function which acts as the render method for this component
+   * - ***fieldRenderer***: function which acts as the render method for this component
+   * - ***classNames.Control***: class name to be added to all
+   * - ***mixins.Control***: default mixins that should be applied
+   *
+   * Example
+   * --------
+   *     var Control = rsui.form.Control;
+   *     <Control label="Foo" error="some error message to display"> some input field </Control>
    ***/
   Control: {
     render: module.exports.fieldRenderer,
@@ -251,19 +271,25 @@ var classData = {
    *
    * Properties
    * ----------
-   * - icon: the [icon name](http://semantic-ui.com/elements/icon.html)
-   * - className: additional button class name ("ui button" will already be applied)
-   * - disabled: true if the button should be disabled
-   * - loading: true if the button is in a loading state
+   * - ***icon***: the [icon name](http://semantic-ui.com/elements/icon.html)
+   * - ***className***: additional button class name ("ui button" will already be applied)
+   * - ***disabled***: true if the button should be disabled
+   * - ***loading***: true if the button is in a loading state
    *
    * Overrides
    * ---------
-   * - signatures.Button: the default button class ("ui button")
-   * - mixins.Button: default mixins that should be applied to the button
-   * - applyIcon: function({children, className, disabled, icon});
+   * - ***classNames.Button***: class name to be added to all
+   * - ***mixins.Button***: default mixins that should be applied
+   * - ***applyIcon***: ```function({children, className, disabled, icon})```
    *     apply the icon and update any data for rendering
-   * - applyLoadingState: function({children, className, disabled, icon});
+   * - ***applyLoadingState***: ```function({children, className, disabled, icon})```
    *     apply a loading state and update any data for rendering
+   *
+   * Example
+   * --------
+   *     var Button = rsui.form.Button;
+   *     <Button icon="comment" onClick={myClickHandler}> Click me </Control>
+   *     <Button loading={true} label="This is loading"/>
    ***/
   Button: {
     render: function() {
@@ -275,7 +301,9 @@ var classData = {
             disabled: props.disabled || state.disabled,
             icon: props.icon
           };
-
+      if (this.props.label) {
+        context.children = [this.props.label];
+      }
       if (this.props.loading || state.loading) {
         module.exports.applyLoadingState.call(this, context);
       }
@@ -307,14 +335,17 @@ var React = require('react'),
     form = require('./form');
 
 module.exports = {
-  mixins: {},
+
+  /*** overrides
+   * Overrides can be used to change how all input components work without having to override each individually.
+   * The following are available
+   *
+   * - ***valueAccessor***: function called with *this* as the owner component to retrieve the input field value
+   * - ***optionsRetriever***: function called with *this* as the owner component  used to return all available options used for a list of components as ```[{value, label, selected}]```
+   ***/
 
   valueAccessor: function() {
     return this.state && this.state.value || this.props.value;
-  },
-
-  errorRenderer: function(error, children) {
-    children.push(React.DOM.div({className: 'ui red pointing top ui label'}, error));
   },
 
   optionsRetriever: function(defaultValue) {
@@ -337,7 +368,6 @@ module.exports = {
     return rtn;
   }
 };
-var signatures = module.exports.signatures;
 
 function getValue(obj) {
   return module.exports.valueAccessor.call(obj);
@@ -350,13 +380,26 @@ var classData = {
    *
    * Properties
    * ----------
-   * - type: the input type ("text" by default)
+   * - ***type***: the input type ("text" by default)
+   * - ***value***: the field value
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
    *
    * Overrides
    * ---------
-   * - *Additional properties can be set defined by the [field Control](../form/Control.md)*
-   * - valueAccessor: function used to retrieve the input field value
-   * - errorRenderer: function(error, children) function used to apply error message
+   * - ***classNames.Text***: class name to be added to all
+   * - ***mixins.Text***: default mixins that should be applied
+   * ```valueAccessor```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var Text = rsui.input.Text;
+   *     <Text label="Foo" value="bar"> ... </Text>
    ***/
   Text: {
     renderInput: function(props) {
@@ -372,14 +415,26 @@ var classData = {
    *
    * Properties
    * ----------
-   * - type: the input type ("text" by default)
+   * - ***options***: the available options list (by default can be array of strings, or array of {value, label})
+   * - ***value***: the field value
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
    *
    * Overrides
    * ---------
-   * - *Additional properties can be set defined by the [field Control](../form/Control.md)*
-   * - valueAccessor: function used to retrieve the input field value
-   * - errorRenderer: function(error, children) used to apply error message
-   * - optionsRetriever: function(value) used to retrieve an array of available options [{value, label, selected}]
+   * - ***classNames.Select***: class name to be added to all
+   * - ***mixins.Select***: default mixins that should be applied
+   * ```valueAccessor```, ```optionsRetriever```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var Text = rsui.input.Text;
+   *     <Text label="Foo" name="foo" value="bar"> ... </Text>
    ***/
   Select: {
     defaultContainerClass: function() {
@@ -394,6 +449,32 @@ var classData = {
     }
   },
 
+  /*** Checkbox
+   * Standard checkbox field that can display a label and optional field wrapper.
+   *
+   * Properties
+   * ----------
+   * - ***defaultChecked*** true if the field should be checked in it's initial state
+   * - ***value***: the field value ("true" by default)
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
+   *
+   * Overrides
+   * ---------
+   * - ***classNames.Checkbox***: class name to be added to all
+   * - ***mixins.Checkbox***: default mixins that should be applied
+   * ```valueAccessor```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var Checkbox = rsui.input.Checkbox;
+   *     <Checkbox label="Foo" defaultChecked={true} value="abc"/>
+   ***/
   Checkbox: {
     defaultLabelAfter: true,
     defaultInlineLabel: true,
@@ -401,26 +482,43 @@ var classData = {
       return common.mergeClassNames('ui checkbox', this.props.type);
     },
     renderInput: function(props) {
-      props.defaultChecked = getValue(this);
-      props.defaultValue = 'true';
+      props.defaultChecked = this.props.defaultChecked;
+      props.value = this.props.value || 'true';
       props.type = 'checkbox';
       return React.DOM.input(props);
-    }
-  },
-
-  Radio: {
-    defaultLabelAfter: true,
-    defaultInlineLabel: true,
-    defaultContainerClass: function() {
-      return common.mergeClassNames('ui radio checkbox', this.props.type);
     },
-    renderInput: function(props) {
-      props.type = 'radio';
-      props.value = getValue(this);
-      return React.DOM.input(props);
+    getModelValue: function(el) {
+      return !!el.checked;
     }
   },
 
+  /*** RadioGroup
+   * Collection of radio items field that can display a label and optional field wrapper.  The item
+   * data is retrieved in the same way that the [Dropdown](./Dropdown.md) component does.
+   *
+   * Properties
+   * ----------
+   * - ***options***: the available options list (by default can be array of strings, or array of {value, label})
+   * - ***value***: the field value ("true" by default)
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
+   *
+   * Overrides
+   * ---------
+   * - ***classNames.RadioGroup***: class name to be added to all
+   * - ***mixins.RadioGroup***: default mixins that should be applied
+   * ```valueAccessor```, ```optionsRetriever```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var RadioGroup = rsui.input.RadioGroup;
+   *     <RadioGroup label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
+   ***/
   RadioGroup: {
     defaultContainerClass: function() {
       return 'grouped fields inline';
@@ -441,6 +539,33 @@ var classData = {
     }
   },
 
+  /*** Dropdown
+   * Similar to the [Select](./Select.md) component but fancier.  See [examples](http://semantic-ui.com/modules/dropdown.html#/examples)
+   * for more details on the actual semantic-ui component.
+   *
+   * Properties
+   * ----------
+   * - ***options***: the available options list (by default can be array of strings, or array of {value, label})
+   * - ***value***: the field value ("true" by default)
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
+   *
+   * Overrides
+   * ---------
+   * - ***classNames.Dropdown***: class name to be added to all
+   * - ***mixins.Dropdown***: default mixins that should be applied
+   * ```valueAccessor```, ```optionsRetriever```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var RadioGroup = rsui.input.RadioGroup;
+   *     <RadioGroup label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
+   ***/
   Dropdown: {
     render: function() {
       var props = this.props,
@@ -464,12 +589,20 @@ var classData = {
         onShow: this.props.onShow,
         onHide: this.props.onHide
       });
+    },
+    getModelValue: function(el) {
+      return $(this.getDOMNode()).dropdown('get value');
     }
   }
 };
 
 common.init(module, classData, {
-  defaultRender: form.fieldRenderer
+  defaults: {
+    render: form.fieldRenderer,
+    getModelValue: function(el) {
+      return $(el).val();
+    }
+  }
 });
 
 })(resolver, module);

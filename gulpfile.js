@@ -88,8 +88,8 @@ function scanForDocs(buffer, cb) {
       if (line.indexOf('***/') >= 0) {
         reset();
       } else {
-        line = line.replace(/^\s*\*\s*/, '');
-        line = line.replace('/^\s*\**', '');
+        line = line.replace(/^\s*\*\s*$/, '');
+        line = line.replace(/^\s*\* /, '');
         if (!currentData) {
           currentData = line;
         } else {
