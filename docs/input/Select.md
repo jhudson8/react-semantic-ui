@@ -25,4 +25,4 @@ Overrides
 Example
 --------
      var Select = rsui.input.Select;
-     <Select label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
+     <Select label="Foo" defaultValue="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>

@@ -1,11 +1,10 @@
-Text
-====
+TextArea
+========
 
-Standard text field that can display a label and optional field wrapper
+Standard textarea field that can display a label and optional field wrapper
 
 Properties
 ----------
-- ***type***: the input type ("text" by default)
 - ***value***: the field value
 - ***name***: the field name
 
@@ -15,7 +14,6 @@ Properties
 
 Overrides
 ---------
-- ***classNames.Text***: class name to be added to all
 - ***mixins.Text***: default mixins that should be applied
 ```valueAccessor```
 
@@ -24,4 +22,4 @@ Overrides
 Example
 --------
     var Text = rsui.input.Text;
-    <Text label="Foo" defaultValue="bar"> ... </Text>
+    <TextArea label="Foo" defaultValue="bar"> ... </TextArea>

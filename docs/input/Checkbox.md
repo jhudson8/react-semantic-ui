@@ -24,4 +24,4 @@ Overrides
 Example
 --------
     var Checkbox = rsui.input.Checkbox;
-    <Checkbox label="Foo" defaultChecked={true} value="abc"/>
+    <Checkbox label="Foo" defaultChecked={true} defaultValue="abc"/>

@@ -4,23 +4,69 @@ var root = {react: React}, module;
 
 module = {};
 (function(require, module) {
+var dependsOn = {},
+    mixins = {};
+
+function get(values, index, rtn) {
+  function addTo(name) {
+    if (!index[name]) {
+      var mixin = mixins[name];
+      if (mixin) {
+        var depends = dependsOn[name];
+        if (depends) {
+          for (var i=0; i<depends.length; i++) {
+            addTo(depends[i]);
+          }
+        }
+        rtn.push(mixin);
+        index[name] = true;
+      } else {
+        throw "invalid mixin '" + name + "'";
+      }
+    }
+  }
+
+  for (var i=0; i<values.length; i++) {
+    var mixin = values[i];
+    if (mixin) {
+      if (Array.isArray(mixin)) {
+        get(mixin, index, rtn);
+      } else if (typeof mixin === 'string') {
+        addTo(mixin);
+      } else {
+        rtn.push(mixin);
+      }
+    }
+  }
+}
+
+module.exports = {
+
+  get: function() {
+    var rtn = [],
+        index = {};
+    get(Array.prototype.slice.call(arguments), index, rtn);
+    return rtn;
+  },
+
+  add: function(name, mixin, depends) {
+    var depends = Array.prototype.slice.call(arguments, 2);
+    dependsOn[name] = depends.length && depends;
+    mixins[name] = mixin;
+  }
+};
+
+})(resolver, module);
+root["mixins"] = module.exports;
+
+
+module = {};
+(function(require, module) {
 var React = require('react'),
+    mixins = require('mixins')
     cache = {
       id: 0
     };
-
-function concat() {
-  var rtn = [];
-  for (var i=0; i<arguments.length; i++) {
-    var arg = arguments[i];
-    if (Array.isArray(arg)) {
-      rtn.concat.apply(rtn, arg);
-    } else if (rtn) {
-      rtn.push(arg);
-    }
-  }
-  return rtn;
-}
 
 module.exports = {
   uniqueId: function() {
@@ -70,9 +116,9 @@ module.exports = {
   init: function(_module, classData, options) {
     options = options || {};
     var exports = _module.exports,
-        mixins = exports.mixins;
+        _mixins = exports.mixins;
     if (!exports.mixins) {
-      mixins = exports.mixins || {};
+      _mixins = exports.mixins || {};
     }
 
     function _init() {
@@ -85,7 +131,7 @@ module.exports = {
             }
           }
         }
-        data.mixins = concat(data.mixins, mixins[name], mixins.all);
+        data.mixins = mixins.get(data.mixins, _mixins[name], _mixins.all);
         exports[name] = React.createClass(data);
       }
     }
@@ -106,6 +152,9 @@ var React = require('react'),
     common = require('./common');
 
 module.exports = {
+
+  mixins: {all: []},
+
   signatures: {
     Button: 'ui button',
     Form: 'ui form segment'
@@ -116,21 +165,19 @@ module.exports = {
   },
 
   // apply an icon to a button
-  applyIcon: function(icon, children) {
-    var rtn = [];
-    rtn.push(React.DOM.i({className: 'icon ' + icon}));
-    React.Children.forEach(children, function(child) {
-      rtn.push(child);
+  applyIcon: function(context) {
+    var _children = [];
+    _children.push(React.DOM.i({className: 'icon ' + context.icon}));
+    React.Children.forEach(context.children, function(child) {
+      _children.push(child);
     });
-    return rtn;
+    context.children = _children;
   },
 
   // apply a loading state to a button
-  applyLoadingState: function(className) {
-    return {
-      icon: 'loading',
-      disabled: true
-    };
+  applyLoadingState: function(context) {
+    context.icon = 'loading';
+    context.disabled = true;
   },
 
   fieldRenderer: function() {
@@ -163,6 +210,9 @@ module.exports = {
 
     inputFieldProps.id = id;
     inputFieldProps.defaultDisabled = this.props.disabled;
+    if (this.modifyInputFieldProps) {
+      inputFieldProps = this.modifyInputFieldProps(inputFieldProps);
+    }
 
     var inputField = this.renderInput(inputFieldProps),
         label = props.label ? React.DOM.label({htmlFor: id}, props.label) : undefined,
@@ -228,7 +278,7 @@ var classData = {
       var props = this.props,
           loading = props.loading || this.state && this.state.loading;
       return React.DOM.form(
-          {className: common.mergeClassNames(signatures.Form, props.className, loading ? 'loading' : undefined)},
+          {className: common.mergeClassNames(signatures.Form, props.className, loading && 'loading')},
           props.children);
     }
   },
@@ -336,6 +386,8 @@ var React = require('react'),
 
 module.exports = {
 
+  mixins: {all: []},
+
   /*** overrides
    * Overrides can be used to change how all input components work without having to override each individually.
    * The following are available
@@ -345,7 +397,7 @@ module.exports = {
    ***/
 
   valueAccessor: function() {
-    return this.state && this.state.value || this.props.value;
+    return this.state && this.state.value || this.props.defaultValue;
   },
 
   optionsRetriever: function(defaultValue) {
@@ -399,13 +451,45 @@ var classData = {
    * Example
    * --------
    *     var Text = rsui.input.Text;
-   *     <Text label="Foo" value="bar"> ... </Text>
+   *     <Text label="Foo" defaultValue="bar"> ... </Text>
    ***/
   Text: {
     renderInput: function(props) {
+      debugger;
       props.type = props.type || 'text';
       props.defaultValue = getValue(this);
       return React.DOM.input(props);
+    }
+  },
+
+  /*** TextArea
+   * Standard textarea field that can display a label and optional field wrapper
+   *
+   * Properties
+   * ----------
+   * - ***value***: the field value
+   * - ***name***: the field name
+   *
+   * *other component attributes will be copied to the input field attributes*
+   *
+   * *see additional properties from [Field Control](../form/Control.md)*
+   *
+   * Overrides
+   * ---------
+   * - ***mixins.Text***: default mixins that should be applied
+   * ```valueAccessor```
+   *
+   * *see [overrides](./overrides.md)*
+   *
+   * Example
+   * --------
+   *     var Text = rsui.input.Text;
+   *     <TextArea label="Foo" defaultValue="bar"> ... </TextArea>
+   ***/
+  TextArea: {
+    renderInput: function(props) {
+      props.defaultValue = getValue(this);
+      return React.DOM.textarea(props);
     }
   },
 
@@ -433,8 +517,8 @@ var classData = {
    *
    * Example
    * --------
-   *     var Text = rsui.input.Text;
-   *     <Text label="Foo" name="foo" value="bar"> ... </Text>
+   *      var Select = rsui.input.Select;
+   *      <Select label="Foo" defaultValue="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
    ***/
   Select: {
     defaultContainerClass: function() {
@@ -473,7 +557,7 @@ var classData = {
    * Example
    * --------
    *     var Checkbox = rsui.input.Checkbox;
-   *     <Checkbox label="Foo" defaultChecked={true} value="abc"/>
+   *     <Checkbox label="Foo" defaultChecked={true} defaultValue="abc"/>
    ***/
   Checkbox: {
     defaultLabelAfter: true,
@@ -517,7 +601,7 @@ var classData = {
    * Example
    * --------
    *     var RadioGroup = rsui.input.RadioGroup;
-   *     <RadioGroup label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
+   *     <RadioGroup label="Foo" defaultValue="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
    ***/
   RadioGroup: {
     defaultContainerClass: function() {
@@ -564,7 +648,7 @@ var classData = {
    * Example
    * --------
    *     var RadioGroup = rsui.input.RadioGroup;
-   *     <RadioGroup label="Foo" value="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
+   *     <RadioGroup label="Foo" defaultValue="abc" options={[{value: '1', label: 'One'}, {value: '2', label: 'Two'}]}/>
    ***/
   Dropdown: {
     render: function() {
@@ -675,7 +759,7 @@ function init() {
       var totalPages = module.exports.totalPageRetriever.call(this);
       if (totalPages && totalPages > 1) {
         var current = this.state.page,
-            radius = this.props.radius || 1,
+            radius = this.props.radius || 0,
             anchor = this.props.anchor || 1,
             separator = this.props.separator || '...',
             min = Math.max(current - radius, 1),
@@ -906,6 +990,9 @@ function init() {
 }
 
 module.exports = {
+
+  mixins: {all: []},
+
   reset: init,
 
   totalPageRetriever: function() {

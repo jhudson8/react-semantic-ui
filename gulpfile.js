@@ -12,7 +12,7 @@ var reactify = require('gulp-react'),
 function build(debug) {
   var pipeline = gulp.src('lib/**/*.js')
       .pipe(header('\nmodule = {};\n(function(require, module) {\n'))
-      .pipe(footer('\n})(resolver, module);\nroot["<%- file.path.slice(0, -3).substring(file.path.indexOf("/lib/") + 5) %>"] = module.exports;\n'))
+      .pipe(footer('\n})(resolver, module);\nroot["<%- file.path.slice(0, -3).substring(file.path.indexOf("/lib/") + 5).replace(/^_/, "") %>"] = module.exports;\n'))
       .pipe(concat('react-semantic-ui.js'))
       .pipe(header('var rsui = (function() {\nfunction resolver(name) { return root[name.substring(name.indexOf("./") == 0 ? 2 : 0)] }\nvar root = {react: React}, module;\n'))
       .pipe(footer('\nreturn root;\n})();\n'))
