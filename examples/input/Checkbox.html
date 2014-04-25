@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://fb.me/react-0.10.0.js"></script>
+    <script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
+    <script type="text/javascript" src="http://semantic-ui.com/build/packaged/javascript/semantic.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
+    <script type="text/javascript" src="../react-semantic-ui.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+
+    <link rel="stylesheet" type="text/css" class="ui" href="http://semantic-ui.com/build/packaged/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+  </head>
+  <body>
+  <h1>Checkbox</h1>
+  <a class="sem-link" href="http://semantic-ui.com/modules/checkbox.html">semantic-ui elements</a>
+
+    <div id="example"></div>
+  </body>
+  <script type="text/javascript">
+
+showExample('Simple',
+'var Checkbox = rsui.input.Checkbox\n\
+var component = <Checkbox name="simple" defaultChecked={true} label="Simple checkbox"/>'
+);
+
+showExample('Slider',
+'var Checkbox = rsui.input.Checkbox\n\
+var component = <Checkbox name="slider" label="Slider" type="slider"/>'
+);
+
+showExample('Toggle',
+'var Checkbox = rsui.input.Checkbox\n\
+var component = <Checkbox name="toggle" label="Toggle" type="toggle"/>'
+);
+
+showExample('Larger',
+'var Checkbox = rsui.input.Checkbox\n\
+var component = <Checkbox name="toggle" label="Larger" containerClass="large"/>'
+);
+  </script>
+</html>
+
