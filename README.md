@@ -8,7 +8,7 @@ Examples
 --------
  - [Button](http://jhudson8.github.io/react-semantic-ui/examples/form/Button.html)
  - [Forms and Controls](http://jhudson8.github.io/react-semantic-ui/examples/form/FormAndControl.html)
- - [Basic Input Fields](http://jhudson8.github.io/react-semantic-ui/examples/input/BasicField.html)
+ - [Basic Input Fields](http://jhudson8.github.io/react-semantic-ui/examples/input/BasicFields.html)
  - [Checkbox](http://jhudson8.github.io/react-semantic-ui/examples/input/Checkbox.html)
  - [Dropdown](http://jhudson8.github.io/react-semantic-ui/examples/input/Dropdown.html)
  - [RadioGroup](http://jhudson8.github.io/react-semantic-ui/examples/input/RadioGroup.html)
