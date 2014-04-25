@@ -84,6 +84,20 @@ module.exports = {
     return 'rsui-' + cache.id++;
   },
 
+  defaults: function() {
+    var base = arguments[0],
+        current;
+    for (var i=1; i<arguments.length; i++) {
+      current = arguments[i];
+      for (var name in current) {
+        if (base[name] === undefined) {
+          base[name] = current[name];
+        }
+      }
+    }
+    return base;
+  },
+
   omit: function(data, keys) {
     var rtn = {};
     for (var name in data) {
@@ -167,8 +181,7 @@ module.exports = {
   mixins: {all: []},
 
   signatures: {
-    Button: 'ui button',
-    Form: 'ui form segment'
+    Form: 'segment'
   },
 
   errorRenderer: function(error, children) {
@@ -291,9 +304,10 @@ var classData = {
     render: function() {
       var props = this.props,
           loading = props.loading || this.state && this.state.loading;
-      return React.DOM.form(
-          {className: common.mergeClassNames(signatures.Form, props.className, loading && 'loading')},
-          props.children);
+          attributes = common.defaults({
+            className: common.mergeClassNames('ui form', signatures.Form, props.className, loading && 'loading')
+          }, this.props);
+      return React.DOM.form(attributes, props.children);
     }
   },
 
@@ -377,11 +391,10 @@ var classData = {
       if (context.disabled) {
         context.className += ' disabled';
       }
-      return this.transferPropsTo(
-        React.DOM.button({
-          className: common.mergeClassNames('ui button', signatures.Button, context.className)
-        }, context.children)
-      );
+      var attributes = common.defaults({
+        className: common.mergeClassNames('ui button', signatures.Button, context.className)
+      }, this.props);
+      return React.DOM.button(attributes, context.children);
     }
   }
 };
@@ -469,7 +482,6 @@ var classData = {
    ***/
   Text: {
     renderInput: function(props) {
-      debugger;
       props.type = props.type || 'text';
       props.defaultValue = getValue(this);
       return React.DOM.input(props);
