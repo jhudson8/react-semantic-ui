@@ -108,6 +108,22 @@ var component = (\n\
     <Table className="basic" entries={entries} cols={columns}/>\n\
   </div>\n\
 );');
+columns[1].formatter = undefined;
+
+showExample('Cell Factory',
+'var Table = rsui.layout.Table,\n\
+    Text = rsui.input.Text;\n\
+columns[1].factory = function(value, index, colData) {\n\
+  return <Text defaultValue={value}/>;\n\
+};\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The column "factory" attribute can be used to provide any type of cell contents.\n\
+    </p>\n\
+    <Table className="basic" entries={entries} cols={columns}/>\n\
+  </div>\n\
+);');
 
   </script>
 </html>
