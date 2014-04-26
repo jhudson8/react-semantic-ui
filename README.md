@@ -13,4 +13,5 @@ Examples
  - [Dropdown](http://jhudson8.github.io/react-semantic-ui/examples/input/Dropdown.html)
  - [RadioGroup](http://jhudson8.github.io/react-semantic-ui/examples/input/RadioGroup.html)
  - [Paginator](http://jhudson8.github.io/react-semantic-ui/examples/layout/Paginator.html)
+ - [Menu](http://jhudson8.github.io/react-semantic-ui/examples/layout/Menu.html)
 
