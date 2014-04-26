@@ -1037,7 +1037,10 @@ function init() {
           if (typeof cellClassName === 'function') {
             cellClassName = cellClassName.call(self, value, col);
           }
-          if (col.formatter) {
+          if (col.factory) {
+            value = col.factory.call(this, value, col);
+          }
+          else if (col.formatter) {
             value = col.formatter.call(this, value, col);
           }
           return React.DOM.td({className: cellClassName}, value);
