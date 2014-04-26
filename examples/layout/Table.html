@@ -26,25 +26,24 @@
   </script>
   <body>
     <div id="header"></div>
-
-    <p>
-      The examples in this page are using the following grid data.  The table can be altered to read different
-      data structures.
-    </p>
-    <pre class="ui segment"><code>
-    var entries = [
-      {name: 'John Smith', email: 'jsmith@foo.com'},
-      {name: 'John Doe', email: 'jdoe@foo.com'},
-      {name: 'Clark Kent', email: 'ckent@foo.com'},
-      {name: 'Abe Lincoln', email: 'abe@foo.com'}
-    ];
-    var columns = [
-      {key: 'name', label: 'Name'},
-      {key: 'email', label: 'Email'}
-    ];
-    </pre><code>
-
-    <div id="example"></div>
+    <div id="example">
+      <p>
+        The examples in this page are using the following grid data.  The table can be altered to read different
+        data structures.
+      </p>
+      <pre class="ui segment"><code>
+var entries = [
+  {name: 'John Smith', email: 'jsmith@foo.com'},
+  {name: 'John Doe', email: 'jdoe@foo.com'},
+  {name: 'Clark Kent', email: 'ckent@foo.com'},
+  {name: 'Abe Lincoln', email: 'abe@foo.com'}
+];
+var columns = [
+  {key: 'name', label: 'Name'},
+  {key: 'email', label: 'Email'}
+];
+      </pre><code>
+    </div>
   </body>
   <script type="text/javascript">
 showTitle('Table', 'http://semantic-ui.com/collections/table.html');
@@ -87,7 +86,8 @@ columns[0].cellClassName = cellClassName;\n\
 var component = (\n\
   <div>\n\
     <p>\n\
-      The table "rowClassName" attribute can be used to add style to individual rows and the col "cellClassName" attribute can be used to add style to individual cells.\n\
+      The table "rowClassName" attribute can be used to add style to individual rows\n\
+      and the col "cellClassName" attribute can be used to add style to individual cells.\n\
     </p>\n\
     <Table rowClassName={rowClassName} className="basic" entries={entries} cols={columns}/>\n\
   </div>\n\
