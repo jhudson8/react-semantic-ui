@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://fb.me/react-0.10.0.js"></script>
+    <script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
+    <script type="text/javascript" src="http://semantic-ui.com/build/packaged/javascript/semantic.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
+    <script type="text/javascript" src="../react-semantic-ui.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+
+    <link rel="stylesheet" type="text/css" class="ui" href="http://semantic-ui.com/build/packaged/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="example"></div>
+  </body>
+  <script type="text/javascript">
+showTitle('Menu', 'http://semantic-ui.com/collections/menu.html');
+
+showExample('Simple Menu',
+'var Menu = rsui.layout.Menu,\
+    handler = function(menuItem) {\n\
+      alert(menuItem.key);\n\
+    },\n\
+    menuItems = [\n\
+      {key: "users", label: "Users"},\n\
+      {key: "messages", label: "Messages"},\n\
+      {key: "browse", label: "Browse"},\n\
+    ];\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The menu "onChange" attribute is used to detect menu changes\n\
+    </p>\n\
+    <Menu active="users" items={menuItems} onChange={handler}/>\n\
+  </div>\n\
+);'
+);
+
+showExample('Icons',
+'var Menu = rsui.layout.Menu,\
+    menuItems = [\n\
+      {key: "users", label: "Users", icon: "user"},\n\
+      {key: "messages", label: "Messages", icon: "mail"},\n\
+      {key: "browse", label: "Browse", icon: "grid layout"},\n\
+    ];\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The menu item "icon" attribute is used to show icons\n\
+    </p>\n\
+    <Menu active="users" items={menuItems}/>\n\
+  </div>\n\
+);'
+);
+
+showExample('Inner Content',
+'var Menu = rsui.layout.Menu,\
+    menuItems = [\n\
+      {key: "users", label: "Users", icon: "user"},\n\
+      {key: "messages", label: "Messages", icon: "mail"},\n\
+      {key: "browse", label: "Browse", icon: "grid layout"},\n\
+    ];\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      Inner content will be rendered after the menu content\n\
+    </p>\n\
+    <Menu active="users" items={menuItems}>\n\
+      <div className="right menu">\n\
+        <div className="item">\n\
+          <div className="ui icon input">\n\
+            <input type="text" placeholder="Search..."/>\n\
+            <i className="search icon"></i>\n\
+          </div>\n\
+        </div>\n\
+      </div>\n\
+    </Menu>\n\
+  </div>\n\
+);'
+);
+
+showExample('Menu Styling',
+'var Menu = rsui.layout.Menu,\
+    menuItems = [\n\
+      {key: "users", label: "Users", icon: "user"},\n\
+      {key: "messages", label: "Messages", icon: "mail"},\n\
+      {key: "browse", label: "Browse", icon: "grid layout"},\n\
+    ];\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      Use the menu "className" attribute to style the menu\n\
+    </p>\n\
+    <Menu active="users" className="secondary pointing" items={menuItems}>\n\
+      <div className="right menu">\n\
+        <div className="item">\n\
+          <div className="ui icon input">\n\
+            <input type="text" placeholder="Search..."/>\n\
+            <i className="search icon"></i>\n\
+          </div>\n\
+        </div>\n\
+      </div>\n\
+    </Menu>\n\
+  </div>\n\
+);'
+);
+
+showExample('Menu Item Styling',
+'var Menu = rsui.layout.Menu,\
+    menuItems = [\n\
+      {key: "users", label: "Users", icon: "user", className: "green"},\n\
+      {key: "messages", label: "Messages", icon: "mail", className: "blue"},\n\
+      {key: "browse", label: "Browse", icon: "grid layout", className: "red"},\n\
+    ];\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      Use the menu item "className" attribute to style individual menu items\n\
+    </p>\n\
+    <Menu active="users" className="secondary pointing" items={menuItems}>\n\
+      <div className="right menu">\n\
+        <div className="item">\n\
+          <div className="ui icon input">\n\
+            <input type="text" placeholder="Search..."/>\n\
+            <i className="search icon"></i>\n\
+          </div>\n\
+        </div>\n\
+      </div>\n\
+    </Menu>\n\
+  </div>\n\
+);'
+);
+  </script>
+</html>

@@ -941,18 +941,18 @@ function init() {
     render: function() {
       var self = this,
           props = this.props,
-          items = props.items,
+          items = props.items || [],
           activeKey = this.state.active,
           active;
-      for (var i=0; i<props.items.length; i++) {
-        if (activeKey === props.items[i].key) {
-          active = props.items[i];
+      for (var i=0; i<items; i++) {
+        if (activeKey === items[i].key) {
+          active = items[i];
           break;
         }
       }
       var children = items.map(function(item) {
         return React.DOM.a({className: common.mergeClassNames((item.key === activeKey) && 'active', 'item', item.className), href: item.key,
-            onClick: common.eventBinder(item, 'onChange', self, true)}, item.label);
+            onClick: common.eventBinder(item, 'onChange', self, true)}, item.icon ? React.DOM.i({className: item.icon + ' icon'}) : undefined, item.label);
       });
 
       return React.DOM.div({className: common.mergeClassNames('ui menu', props.className)},
