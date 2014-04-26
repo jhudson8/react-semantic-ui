@@ -1,0 +1,17 @@
+body {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif/*rtl:prepend:"Droid Arabic Kufi","Droid Sans", */;
+  background-color: #FCFCFC;
+}
+
+#example {
+  max-width: 990px;
+}
+
+.example-container {
+  margin-bottom: 2em;
+}
+
+.sem-link {
+  font-size: .8em;
+  padding-left: 20px;
+}

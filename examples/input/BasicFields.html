@@ -12,12 +12,11 @@
     <link rel="stylesheet" type="text/css" href="../style.css">
   </head>
   <body>
-  <h1>Basic Fields</h1>
-  <a class="sem-link" href="http://semantic-ui.com/elements/input.html">semantic-ui elements</a>
-
+    <div id="header"></div>
     <div id="example"></div>
   </body>
   <script type="text/javascript">
+showTitle('Basic Fields', 'http://semantic-ui.com/elements/input.html');
 
 showExample('Text Field',
 'var Form = rsui.form.Form,\n\
@@ -27,6 +26,17 @@ var component = <Form>\n\
     Input fields will wrap in Control components if "label", "containerClass" or "fieldClass" properties are provided.\n\
   </p>\n\
   <Text name="textField" label="Text Field" defaultValue="I am an input field"/>\n\
+</Form>'
+);
+
+showExample('Error Messages',
+'var Form = rsui.form.Form,\n\
+    Text = rsui.input.Text;\n\
+var component = <Form>\n\
+  <p>\n\
+    The "error" property is used to represent a field error state.\n\
+  </p>\n\
+  <Text name="textField" label="Text Field" defaultValue="I am an input field" error="Something is wrong here"/>\n\
 </Form>'
 );
 

@@ -16,35 +16,48 @@
     <div id="example"></div>
   </body>
   <script type="text/javascript">
-showTitle('RadioGroup', 'http://semantic-ui.com/collections/form.html');
+showTitle('Paginator', 'http://semantic-ui.com/collections/menu.html');
 
-showExample('Simple RadioGroup',
-'var Form = rsui.form.Form,\n\
-    RadioGroup = rsui.input.RadioGroup,\n\
-    options = ["One", "Two", "Three"];\n\
+showExample('Radius',
+'var Paginator = rsui.layout.Paginator,\
+    handler = function(pageNumber) {\n\
+      alert("page: " + pageNumber);\n\
+    };\n\
 var component = (\n\
-  <Form>\n\
-    <p>\n\
-      options can be provided as an array of strings\n\
-    </p>\n\
-    <RadioGroup label="Click Something" name="simple" options={options} defaultValue="Two"/>\n\
-  </Form>\n\
+  <div>\n\
+  <Paginator totalPages={20} page={8} radius={3} anchor={1} onChange={handler}/>\n\
+  </div>\n\
 );'
 );
 
-showExample('Alternate options format',
-'var Form = rsui.form.Form,\n\
-    RadioGroup = rsui.input.RadioGroup,\n\
-    options = [{label: "One", value: "1"}, {label: "Two", value: "2"}, {label: "Three", value: "3"}];\n\
+showExample('Anchor',
+'var Paginator = rsui.layout.Paginator,\n\
+    clickHandler = function(pageNumber) {\n\
+      console.log("page: " + pageNumber);\n\
+    };\n\
 var component = (\n\
-  <Form>\n\
+  <div>\n\
     <p>\n\
-      options can be provided as an array of strings\n\
+      The "anchor" is the number of page links at the beginning and end of the list\n\
     </p>\n\
-    <RadioGroup label="Click Something" name="alternate" options={options} defaultValue="2"/>\n\
-  </Form>\n\
+  <Paginator totalPages={20} page={8} radius={0} anchor={3}/>\n\
+  </div>\n\
+);'
+);
+
+showExample('Compact',
+'var Paginator = rsui.layout.Paginator,\n\
+    clickHandler = function(pageNumber) {\n\
+      console.log("page: " + pageNumber);\n\
+    };\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      Compact paginators have the left/right arrows in place of the page link separators\n\
+    </p>\n\
+  <Paginator totalPages={20} page={8} compact={true}/>\n\
+  </div>\n\
 );'
 );
   </script>
 </html>
-

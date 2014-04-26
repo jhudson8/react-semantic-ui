@@ -8,13 +8,18 @@ var ExampleContainer = React.createClass({
       throw e;
     }
     
-    return React.DOM.div({},
-      React.DOM.h3({}, this.props.title),
-      React.DOM.pre(undefined, React.DOM.code(undefined, code)),
+    return React.DOM.div({className: 'example-container'},
+      React.DOM.h4({className: 'ui header'}, this.props.title),
+      React.DOM.pre({className: 'ui segment'}, React.DOM.code(undefined, code)),
       React.DOM.div({}, component)
     );
   }
 });
+
+function showTitle(title, semUiLink) {
+  $('#header').html('<h2><a href="' + semUiLink + '">' + title + '</a></span></h2>');
+
+}
 
 function showExample(title, code) {
   var el = document.createElement('div'),

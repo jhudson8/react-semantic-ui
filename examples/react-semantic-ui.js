@@ -807,11 +807,15 @@ function init() {
             min = Math.max(current - radius, 1),
             max = Math.min(current + radius, totalPages),
             showArrows = this.props.showArrows === undefined ? true : this.props.showArrows,
-            totalShowing = (radius * 2) + 3 /* current + separator */ + (showArrows ? 2 : 0),
+            totalShowing = (radius * 2) + (anchor * 2) + 3 /* current + separator */,
             showRightSeparator = (totalPages > current + radius + anchor),
-            showLeftSeparator = (current  > (anchor + radius)),
+            showLeftSeparator = (current  > (anchor + Math.max(1, radius))),
+            compact = this.props.compact,
             index = {},
             children = [];
+        if (compact) {
+          showArrows = false;
+        }
 
         if (showLeftSeparator) {
           totalShowing--;
@@ -835,7 +839,7 @@ function init() {
         }
 
         // upper anchor
-        for (var i=totalPages-anchor+1; i<=totalPages; i++) {
+        for (var i=Math.max(totalPages-anchor+1, current+1); i<=totalPages; i++) {
           if (!index[i]) {
             children.push(i);
             index[i] = children.length;
@@ -868,10 +872,18 @@ function init() {
 
         // separators
         if (showLeftSeparator) {
-          children.splice(anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          if (compact) {
+            children.splice(anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'left arrow icon', onClick: common.eventBinder(current-1, 'onChange', self, true)})));
+          } else {
+            children.splice(anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          }
         }
         if (showRightSeparator) {
-          children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          if (compact) {
+            children.splice(children.length-anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'right arrow icon', onClick: common.eventBinder(current+1, 'onChange', self, true)})));
+          } else {
+            children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          }
         }
 
         // arrows
@@ -879,10 +891,10 @@ function init() {
           var nodeName, className;
           if (current === 1) {
             nodeName = 'div';
-            className = 'disabled item';
+            className = 'icon disabled item';
           } else {
             nodeName = 'a';
-            className = 'item';
+            className = 'icon item';
           }
           children.splice(0, 0, React.DOM[nodeName]({
             className: className, onClick: current > 1 ? common.eventBinder(current-1, 'onChange', self, true) : undefined
@@ -890,10 +902,10 @@ function init() {
 
           if (current === totalPages) {
             nodeName = 'div';
-            className = 'disabled item';
+            className = 'icon disabled item';
           } else {
             nodeName = 'a';
-            className = 'item';
+            className = 'icon item';
           }
           children.splice(children.length, 0, React.DOM[nodeName]({
             className: className, onClick: current < totalPages ? common.eventBinder(current+1, 'onChange', self, true) : undefined
