@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://fb.me/react-0.10.0.js"></script>
+    <script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
+    <script type="text/javascript" src="http://semantic-ui.com/build/packaged/javascript/semantic.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
+    <script type="text/javascript" src="../react-semantic-ui.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+
+    <link rel="stylesheet" type="text/css" class="ui" href="http://semantic-ui.com/build/packaged/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+  </head>
+
+  <script type="text/javascript">
+    var entries = [
+      {name: 'John Smith', email: 'jsmith@foo.com'},
+      {name: 'John Doe', email: 'jdoe@foo.com'},
+      {name: 'Clar Kent', email: 'ckent@foo.com'},
+      {name: 'Abe Lincoln', email: 'abe@foo.com'}
+    ];
+    var columns = [
+      {key: 'name', label: 'Name'},
+      {key: 'email', label: 'Email'}
+    ];
+  </script>
+  <body>
+    <div id="header"></div>
+
+    <p>
+      The examples in this page are using the following grid data.  The table can be altered to read different
+      data structures.
+    </p>
+    <pre class="ui segment"><code>
+    var entries = [
+      {name: 'John Smith', email: 'jsmith@foo.com'},
+      {name: 'John Doe', email: 'jdoe@foo.com'},
+      {name: 'Clark Kent', email: 'ckent@foo.com'},
+      {name: 'Abe Lincoln', email: 'abe@foo.com'}
+    ];
+    var columns = [
+      {key: 'name', label: 'Name'},
+      {key: 'email', label: 'Email'}
+    ];
+    </pre><code>
+
+    <div id="example"></div>
+  </body>
+  <script type="text/javascript">
+showTitle('Table', 'http://semantic-ui.com/collections/table.html');
+
+showExample('Simple Table',
+'var Table = rsui.layout.Table;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The "entries" attribute specifies the table data and the "cols" attribute specifies the column meta data.\n\
+    </p>\n\
+    <Table entries={entries} cols={columns}/>\n\
+  </div>\n\
+);');
+
+showExample('Table Style',
+'var Table = rsui.layout.Table;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The table "className" attribute can be used to add style to the table\n\
+    </p>\n\
+    <Table className="basic" entries={entries} cols={columns}/>\n\
+  </div>\n\
+);');
+
+showExample('Row and Cell Style',
+'var Table = rsui.layout.Table,\n\
+    rowClassName = function(entry, col) {\n\
+      if (entry.email === "ckent@foo.com") {\n\
+        return "positive";\n\
+      }\n\
+    };\n\
+    cellClassName = function(value, col) {\n\
+      if (value === "John Doe") {\n\
+        return "negative";\n\
+      }\n\
+    };\n\
+columns[0].cellClassName = cellClassName;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The table "rowClassName" attribute can be used to add style to individual rows and the col "cellClassName" attribute can be used to add style to individual cells.\n\
+    </p>\n\
+    <Table rowClassName={rowClassName} className="basic" entries={entries} cols={columns}/>\n\
+  </div>\n\
+);');
+columns[0].cellClassName = undefined;
+
+showExample('Table Formatting',
+'var Table = rsui.layout.Table,\n\
+    formatter = function(value, col) {\n\
+      return value.replace("@", "<at>");\n\
+    };\n\
+columns[1].formatter = formatter;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The column "formatter" attribute can be used to format table cell data.\n\
+    </p>\n\
+    <Table className="basic" entries={entries} cols={columns}/>\n\
+  </div>\n\
+);');
+
+  </script>
+</html>
