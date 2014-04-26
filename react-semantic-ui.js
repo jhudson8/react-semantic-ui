@@ -1030,24 +1030,25 @@ function init() {
         return React.DOM.th({className: className}, label);
       });
 
-      var rows = module.exports.entriesRetriever.call(this, props.entries).map(function(entry) {
-        var cells = props.cols.map(function(col) {
-          var value = module.exports.valueRetriever.call(this, col, entry),
-              cellClassName = col.cellClassName;
-          if (typeof cellClassName === 'function') {
-            cellClassName = cellClassName.call(self, value, col);
-          }
-          if (col.factory) {
-            value = col.factory.call(this, value, col);
-          }
-          else if (col.formatter) {
-            value = col.formatter.call(this, value, col);
-          }
-          return React.DOM.td({className: cellClassName}, value);
-        });
-        var className = props.rowClassName && props.rowClassName.call(this, entry);
-        return React.DOM.tr({className: className}, cells);
-      });
+      var index = 0,
+          rows = module.exports.entriesRetriever.call(this, props.entries).map(function(entry) {
+            var cells = props.cols.map(function(col) {
+              var value = module.exports.valueRetriever.call(this, col, entry),
+                  cellClassName = col.cellClassName;
+              if (typeof cellClassName === 'function') {
+                cellClassName = cellClassName.call(self, value, col);
+              }
+              if (col.factory) {
+                value = col.factory.call(this, value, index++, col);
+              }
+              else if (col.formatter) {
+                value = col.formatter.call(this, value, index++, col);
+              }
+              return React.DOM.td({className: cellClassName}, value);
+            });
+            var className = props.rowClassName && props.rowClassName.call(this, entry);
+            return React.DOM.tr({className: className}, cells);
+          });
 
       return React.DOM.table({className: common.mergeClassNames('ui table', props.className)},
         React.DOM.thead(undefined, cols),
