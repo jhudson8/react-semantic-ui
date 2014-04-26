@@ -12,4 +12,5 @@ Examples
  - [Checkbox](http://jhudson8.github.io/react-semantic-ui/examples/input/Checkbox.html)
  - [Dropdown](http://jhudson8.github.io/react-semantic-ui/examples/input/Dropdown.html)
  - [RadioGroup](http://jhudson8.github.io/react-semantic-ui/examples/input/RadioGroup.html)
+ - [Paginator](http://jhudson8.github.io/react-semantic-ui/examples/layout/Paginator.html)
 
