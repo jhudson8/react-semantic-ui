@@ -6,14 +6,14 @@ react-semantic-ui
 
 Examples
 --------
- - [Button](http://jhudson8.github.io/react-semantic-ui/examples/form/Button.html)
+ - [Buttons](http://jhudson8.github.io/react-semantic-ui/examples/form/Button.html)
  - [Forms and Controls](http://jhudson8.github.io/react-semantic-ui/examples/form/FormAndControl.html)
  - [Basic Input Fields](http://jhudson8.github.io/react-semantic-ui/examples/input/BasicFields.html)
- - [Checkbox](http://jhudson8.github.io/react-semantic-ui/examples/input/Checkbox.html)
- - [Dropdown](http://jhudson8.github.io/react-semantic-ui/examples/input/Dropdown.html)
- - [RadioGroup](http://jhudson8.github.io/react-semantic-ui/examples/input/RadioGroup.html)
- - [Paginator](http://jhudson8.github.io/react-semantic-ui/examples/layout/Paginator.html)
+ - [Checkboxes](http://jhudson8.github.io/react-semantic-ui/examples/input/Checkbox.html)
+ - [Dropdowns](http://jhudson8.github.io/react-semantic-ui/examples/input/Dropdown.html)
+ - [RadioGroups](http://jhudson8.github.io/react-semantic-ui/examples/input/RadioGroup.html)
+ - [Paginators](http://jhudson8.github.io/react-semantic-ui/examples/layout/Paginator.html)
  - [Menu](http://jhudson8.github.io/react-semantic-ui/examples/layout/Menu.html)
  - [Tabs](http://jhudson8.github.io/react-semantic-ui/examples/layout/Tabs.html)
- - [Table](http://jhudson8.github.io/react-semantic-ui/examples/layout/Table.html)
+ - [Tables](http://jhudson8.github.io/react-semantic-ui/examples/layout/Table.html)
 
