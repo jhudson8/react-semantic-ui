@@ -932,6 +932,9 @@ function init() {
     }
   });
 
+  /*** Menu
+   * FIXME add Menu docs
+   ***/
   module.exports.Menu = React.createClass({
     getInitialState: function() {
       return {
@@ -966,6 +969,9 @@ function init() {
     }
   });
 
+  /*** Tabs
+   * FIXME add Tabs docs
+   ***/
   module.exports.Tabs = React.createClass({
     getInitialState: function() {
       return {
@@ -1006,6 +1012,9 @@ function init() {
     }
   });
 
+  /*** Table
+   * FIXME add Table docs
+   ***/
   module.exports.Table = React.createClass({
     render: function() {
       var self = this,
