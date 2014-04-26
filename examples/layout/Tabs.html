@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://fb.me/react-0.10.0.js"></script>
+    <script type="text/javascript" src="http:///cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
+    <script type="text/javascript" src="http://semantic-ui.com/build/packaged/javascript/semantic.min.js"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
+    <script type="text/javascript" src="../react-semantic-ui.js"></script>
+    <script type="text/javascript" src="../common.js"></script>
+
+    <link rel="stylesheet" type="text/css" class="ui" href="http://semantic-ui.com/build/packaged/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="example"></div>
+  </body>
+  <script type="text/javascript">
+showTitle('Tab Layout', 'http://semantic-ui.com/collections/menu.html');
+
+showExample('Simple Tab Panel',
+'var Tabs = rsui.layout.Tabs,\n\
+    handler = function(tab) {\n\
+      alert(tab.key);\n\
+    };\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The "onChange" attribute is used to detect tab changes\n\
+    </p>\n\
+    <Tabs onChange={handler} active="tab2" tabs={[\n\
+      {key: "tab1", label: "Tab 1", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 1 contents")\n\
+      }},\n\
+      {key: "tab2", label: "Tab 2", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 2 contents")\n\
+      }},\n\
+    ]}/>\n\
+  </div>\n\
+);');
+
+showExample('Icons',
+'var Tabs = rsui.layout.Tabs;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The tab panel item "icon" attribute is used to add icons.\n\
+    </p>\n\
+    <Tabs active="tab2" tabs={[\n\
+      {key: "tab1", icon: "chat", label: "Tab 1", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 1 contents")\n\
+      }},\n\
+      {key: "tab2", icon: "home", label: "Tab 2", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 2 contents")\n\
+      }},\n\
+    ]}/>\n\
+  </div>\n\
+);');
+
+showExample('Style',
+'var Tabs = rsui.layout.Tabs;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The "type" and "bodyType" attribute can be used to style the tab panel.\n\
+    </p>\n\
+    <Tabs type="secondary" bodyType="segment" active="tab2" tabs={[\n\
+      {key: "tab1", icon: "chat", label: "Tab 1", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 1 contents")\n\
+      }},\n\
+      {key: "tab2", icon: "home", label: "Tab 2", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 2 contents")\n\
+      }},\n\
+    ]}/>\n\
+  </div>\n\
+);');
+
+showExample('Tab Item Style',
+'var Tabs = rsui.layout.Tabs;\n\
+var component = (\n\
+  <div>\n\
+    <p>\n\
+      The tab item "className attribute can be used to style the tab item.\n\
+    </p>\n\
+    <Tabs type="secondary" bodyType="segment" active="tab2" tabs={[\n\
+      {key: "tab1", className: "green", icon: "chat", label: "Tab 1", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 1 contents")\n\
+      }},\n\
+      {key: "tab2", className: "blue", icon: "home", label: "Tab 2", page: function() {\n\
+        return React.DOM.div(undefined, "Tab 2 contents")\n\
+      }},\n\
+    ]}/>\n\
+  </div>\n\
+);');
+  </script>
+</html>
