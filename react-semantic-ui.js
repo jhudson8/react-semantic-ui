@@ -807,11 +807,15 @@ function init() {
             min = Math.max(current - radius, 1),
             max = Math.min(current + radius, totalPages),
             showArrows = this.props.showArrows === undefined ? true : this.props.showArrows,
-            totalShowing = (radius * 2) + 3 /* current + separator */ + (showArrows ? 2 : 0),
+            totalShowing = (radius * 2) + (anchor * 2) + 3 /* current + separator */,
             showRightSeparator = (totalPages > current + radius + anchor),
-            showLeftSeparator = (current  > (anchor + radius)),
+            showLeftSeparator = (current  > (anchor + Math.max(1, radius))),
+            compact = this.props.compact,
             index = {},
             children = [];
+        if (compact) {
+          showArrows = false;
+        }
 
         if (showLeftSeparator) {
           totalShowing--;
@@ -835,7 +839,7 @@ function init() {
         }
 
         // upper anchor
-        for (var i=totalPages-anchor+1; i<=totalPages; i++) {
+        for (var i=Math.max(totalPages-anchor+1, current+1); i<=totalPages; i++) {
           if (!index[i]) {
             children.push(i);
             index[i] = children.length;
@@ -868,10 +872,18 @@ function init() {
 
         // separators
         if (showLeftSeparator) {
-          children.splice(anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          if (compact) {
+            children.splice(anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'left arrow icon', onClick: common.eventBinder(current-1, 'onChange', self, true)})));
+          } else {
+            children.splice(anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          }
         }
         if (showRightSeparator) {
-          children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          if (compact) {
+            children.splice(children.length-anchor, 0, React.DOM.a({className: 'icon item'}, React.DOM.i({className: 'right arrow icon', onClick: common.eventBinder(current+1, 'onChange', self, true)})));
+          } else {
+            children.splice(children.length-anchor, 0, React.DOM.div({className: 'disabled item'}, separator));
+          }
         }
 
         // arrows
@@ -879,10 +891,10 @@ function init() {
           var nodeName, className;
           if (current === 1) {
             nodeName = 'div';
-            className = 'disabled item';
+            className = 'icon disabled item';
           } else {
             nodeName = 'a';
-            className = 'item';
+            className = 'icon item';
           }
           children.splice(0, 0, React.DOM[nodeName]({
             className: className, onClick: current > 1 ? common.eventBinder(current-1, 'onChange', self, true) : undefined
@@ -890,10 +902,10 @@ function init() {
 
           if (current === totalPages) {
             nodeName = 'div';
-            className = 'disabled item';
+            className = 'icon disabled item';
           } else {
             nodeName = 'a';
-            className = 'item';
+            className = 'icon item';
           }
           children.splice(children.length, 0, React.DOM[nodeName]({
             className: className, onClick: current < totalPages ? common.eventBinder(current+1, 'onChange', self, true) : undefined
@@ -920,6 +932,9 @@ function init() {
     }
   });
 
+  /*** Menu
+   * FIXME add Menu docs
+   ***/
   module.exports.Menu = React.createClass({
     getInitialState: function() {
       return {
@@ -929,18 +944,18 @@ function init() {
     render: function() {
       var self = this,
           props = this.props,
-          items = props.items,
+          items = props.items || [],
           activeKey = this.state.active,
           active;
-      for (var i=0; i<props.items.length; i++) {
-        if (activeKey === props.items[i].key) {
-          active = props.items[i];
+      for (var i=0; i<items; i++) {
+        if (activeKey === items[i].key) {
+          active = items[i];
           break;
         }
       }
       var children = items.map(function(item) {
         return React.DOM.a({className: common.mergeClassNames((item.key === activeKey) && 'active', 'item', item.className), href: item.key,
-            onClick: common.eventBinder(item, 'onChange', self, true)}, item.label);
+            onClick: common.eventBinder(item, 'onChange', self, true)}, item.icon ? React.DOM.i({className: item.icon + ' icon'}) : undefined, item.label);
       });
 
       return React.DOM.div({className: common.mergeClassNames('ui menu', props.className)},
@@ -954,6 +969,9 @@ function init() {
     }
   });
 
+  /*** Tabs
+   * FIXME add Tabs docs
+   ***/
   module.exports.Tabs = React.createClass({
     getInitialState: function() {
       return {
@@ -994,6 +1012,9 @@ function init() {
     }
   });
 
+  /*** Table
+   * FIXME add Table docs
+   ***/
   module.exports.Table = React.createClass({
     render: function() {
       var self = this,
