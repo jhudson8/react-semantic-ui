@@ -1,13 +1,43 @@
-var window = global.window = require('domino').createWindow('<div id="test"></div>');
-var document = global.document = window.document;
-global.navigator = { userAgent: "node-js" };
+var chai = require('chai'),
+    sinon = require('sinon'),
+    sinonChai = require('sinon-chai'),
+    expect = chai.expect,
+    React = require('react'),
+    Backbone = require('backbone'),
+    _ = require('underscore'),
+    $ = {
+        options: [],
+        ajax: function(options) {
+          this.options.push(options);
+        },
+        success: function(data) {
+          var options = this.options.pop();
+          options.success && options.success(data);
+        },
+        error: function(error) {
+          var options = this.options.pop();
+          options.error && options.error(error);
+        }
+      };
+chai.use(sinonChai);
+Backbone.$ = $;
+require('react-mixin-manager')(React);
+global.rsui = require('../index')(React);
+global.React = React;
 
-global.expect = require("chai").expect;
-global.React = require("react");
-global.utils = undefined;
-React.addons = require("react-addons");
-global.TestUtils = React.addons.TestUtils;
+var chai = require('chai'),
+    sinon = require('sinon'),
+    sinonChai = require('sinon-chai'),
+    expect = chai.expect;
+global.sinon = sinon;
+global.expect = expect;
 
+// intitialize mixin-dependencies
+require('react-mixin-manager')(React);
+// initialize backbone-async-event
+require('backbone-async-event')(Backbone);
+// add react-backbone mixins
+require('../index')(React);
 
 global.normalizeReact = function(component) {
   var body = typeof component === 'string' ? component : React.renderComponentToString(component);
@@ -46,3 +76,4 @@ global.noClass = function(classNames, component) {
 
 require('./spec/form');
 require('./spec/input');
+require('./spec/layout');

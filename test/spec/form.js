@@ -1,11 +1,10 @@
-var formComponents = require('../../lib/form'),
+var formComponents = rsui.form,
     Button = formComponents.Button,
-    window2, document2;
+    Control = formComponents.Control;
 
 describe('Button', function() {
   var _applyLoadingState = formComponents.applyLoadingState;
   afterEach(function() {
-    formComponents.defaultClassSignature('button', 'ui button');
     formComponents.applyLoadingState = _applyLoadingState;
   });
 
@@ -30,9 +29,9 @@ describe('Button', function() {
   });
 
   it('should override default button class names', function() {
-    formComponents.defaultClassSignature('button', 'foo');
     var button = new Button({disabled: true}),
         domString = React.renderComponentToString(button);
+    button._className = 'foo';
     expect(hasClass(['foo'], domString)).to.eql(true);
     expect(noClass(['ui', 'button'], domString)).to.eql(true);
   });
@@ -56,5 +55,12 @@ describe('Button', function() {
     var button = new Button({icon: 'foo'}, 'inner content');
         domString = React.renderComponentToString(button);
     expect(domString.indexOf('<i class="icon foo"') >= 0).to.eql(true);
+  });
+});
+
+describe('Control', function() {
+  it('should render', function() {
+    var control = new Control({label: 'Test'}, React.DOM.div({}, 'inner content'));
+    expect(normalizeReact(control)).to.eql('<div class="field"><label for="*">Test</label><div>inner content</div></div>');
   });
 });

@@ -15,7 +15,12 @@
     "through2": "*",
     "run-sequence": "*",
     "line-input-stream": "*",
-    "stream-buffers": "*"
+    "stream-buffers": "*",
+    "sinon": "*",
+    "chai": "*",
+    "sinon-chai": "*",
+    "backbone": "*",
+    "underscore": "*"
   },
   "dependencies": {
     "react": "*"
