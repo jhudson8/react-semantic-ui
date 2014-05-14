@@ -3,6 +3,17 @@ react-semantic-ui
 
 [React](http://facebook.github.io/react/) components for [semantic-ui](http://semantic-ui.com/).  See [individual component docs](https://github.com/jhudson8/react-semantic-ui/tree/master/docs) for more details.
 
+Installation
+==============
+* Browser: include *react-semantic-ui[.min].js* after the listed dependencies
+* CommonJS: ```global.rsui = require('react-semantic-ui')(require('react'));```
+
+Dependencies
+--------------
+* [React](http://facebook.github.io/react/)
+* [react-mixin-manager](https://github.com/jhudson8/react-mixin-manager)
+* [semantic-ui](http://semantic-ui.com/) (browser only)
+
 
 Examples
 --------
