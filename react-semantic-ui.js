@@ -1,5 +1,5 @@
 /*!
- * react-semantic-ui v0.1.0 (https://github.com/jhudson8/react-semantic-ui)
+ * react-semantic-ui v0.1.1 (https://github.com/jhudson8/react-semantic-ui)
  * 
  * Copyright (c) 2014 Joe Hudson<joehud@gmail.com>
  * 
