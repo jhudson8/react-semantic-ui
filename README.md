@@ -20,6 +20,8 @@ Dependencies
 
 Examples
 --------
+See the [documentation](https://github.com/jhudson8/react-semantic-ui/tree/master/docs) for usage details
+
  - [Buttons](http://jhudson8.github.io/react-semantic-ui/examples/form/Button.html)
  - [Forms and Controls](http://jhudson8.github.io/react-semantic-ui/examples/form/FormAndControl.html)
  - [Basic Input Fields](http://jhudson8.github.io/react-semantic-ui/examples/input/BasicFields.html)
