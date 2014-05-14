@@ -3,6 +3,9 @@ react-semantic-ui
 
 [React](http://facebook.github.io/react/) components for [semantic-ui](http://semantic-ui.com/).  See [individual component docs](https://github.com/jhudson8/react-semantic-ui/tree/master/docs) for more details.
 
+The purpose of this project is not to recreate every semantic-ui component but only where it makes sense.  Where there is a value add either in the dynamic
+nature of the component or state-based rendering is desired.
+
 Installation
 ==============
 * Browser: include *react-semantic-ui[.min].js* after the listed dependencies
