@@ -1,28 +1,20 @@
 {
   "devDependencies": {
-    "gulp-mocha-phantomjs": "*",
     "mocha": "*",
     "chai": "*",
     "react-addons": "*",
-    "domino": "*",
     "gulp-header": "*",
     "gulp-footer": "*",
     "gulp-watch": "*",
     "gulp-util": "*",
-    "gulp-react": "*",
     "gulp-concat": "*",
     "gulp-watch": "*",
     "through2": "*",
-    "run-sequence": "*",
-    "line-input-stream": "*",
-    "stream-buffers": "*",
-    "sinon": "*",
-    "chai": "*",
     "sinon-chai": "*",
     "backbone": "*",
-    "underscore": "*"
-  },
-  "dependencies": {
-    "react": "*"
+    "underscore": "*",
+    "gulp-browserify": "*",
+    "gulp-rename": "*",
+    "reactify": "*"
   }
 }

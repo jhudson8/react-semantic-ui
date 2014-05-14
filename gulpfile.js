@@ -1,21 +1,19 @@
-var reactify = require('gulp-react'),
-    header = require('gulp-header'),
+var header = require('gulp-header'),
     footer = require('gulp-footer'),
     concat = require('gulp-concat'),
     through = require('through2'),
     gutil = require('gulp-util'),
-    runSequence = require('run-sequence'),
-    streamBuffers = require('stream-buffers'),
+    browserify = require('gulp-browserify'),
+    rename = require('gulp-rename'),
     gulp = require('gulp'),
     path = require('path');
 
-function build(debug) {
-  var pipeline = gulp.src('lib/**/*.js')
-      .pipe(header('\nmodule = {};\n(function(require, module) {\n'))
-      .pipe(footer('\n})(resolver, module);\nroot["<%- file.path.slice(0, -3).substring(file.path.indexOf("/lib/") + 5).replace(/^_/, "") %>"] = module.exports;\n'))
-      .pipe(concat('react-semantic-ui.js'))
-      .pipe(header('var rsui = (function() {\nfunction resolver(name) { return root[name.substring(name.indexOf("./") == 0 ? 2 : 0)] }\nvar root = {react: React}, module;\n'))
-      .pipe(footer('\nreturn root;\n})();\n'))
+function build() {
+  var pipeline = gulp.src('./index.js')
+      .pipe(browserify({
+        transform: ['reactify']
+      }))
+      .pipe(rename('react-semantic-ui.js'))
       .pipe(gulp.dest('./'));
 }
 
