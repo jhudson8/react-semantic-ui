@@ -1,12 +1,18 @@
 var header = require('gulp-header'),
-    footer = require('gulp-footer'),
-    concat = require('gulp-concat'),
     through = require('through2'),
     gutil = require('gulp-util'),
     browserify = require('gulp-browserify'),
     rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
     gulp = require('gulp'),
+    fs = require('fs'),
     path = require('path');
+
+var packageInfo = JSON.parse(fs.readFileSync('./package.json', {encoding: 'utf-8'})),
+    name = packageInfo.name,
+    version = packageInfo.version,
+    headerContent = fs.readFileSync('./_header.txt', {encoding: 'utf8'}),
+    headerMinContent = fs.readFileSync('./_header.min.txt', {encoding: 'utf8'});
 
 function build() {
   var pipeline = gulp.src('./index.js')
@@ -14,14 +20,12 @@ function build() {
         transform: ['reactify']
       }))
       .pipe(rename('react-semantic-ui.js'))
+      .pipe(header(headerContent))
+      .pipe(gulp.dest('./'))  
+      .pipe(uglify())
+      .pipe(rename('react-semantic-ui.min.js'))
+      .pipe(header(headerMinContent))
       .pipe(gulp.dest('./'));
-}
-
-function _watch(debug) {
-  gulp.src('./lib/*.js')
-      .pipe(watch(function() {
-        build(debug);
-      }));
 }
 
 gulp.task('build', function() {
