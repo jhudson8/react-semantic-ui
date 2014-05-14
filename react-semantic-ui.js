@@ -11,7 +11,7 @@ function lib(React) {
 }
 
 if (global.React) {
-  module.exports = lib(global.React);
+  global.rsui = lib(global.React);
 } else {
   module.exports = lib;
 }
