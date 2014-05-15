@@ -1,7 +1,7 @@
 /*!
  * react-semantic-ui v0.1.1 (https://github.com/jhudson8/react-semantic-ui)
  * 
- * Copyright (c) 2014 Joe Hudson<joehud@gmail.com>
+ * Copyright (c) 2014 Joe Hudson<joehud_AT_gmail.com>
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
