@@ -3,8 +3,11 @@ react-semantic-ui
 
 [React](http://facebook.github.io/react/) components for [semantic-ui](http://semantic-ui.com/).  See [individual component docs](https://github.com/jhudson8/react-semantic-ui/tree/master/docs) for more details.
 
-The purpose of this project is not to recreate every semantic-ui component but only where it makes sense.  Where there is a value add either in the dynamic
-nature of the component or state-based rendering is desired.
+The purpose of this project is not to recreate every semantic-ui component but only where it makes sense and React components can add value.
+
+* wrap up larger sets of HTML into a meaningful component
+* if a component deals with user input where it can effictively manage state
+* if a component can benefit from data driven properties to reneer itself in a dynamic way
 
 Installation
 ==============
