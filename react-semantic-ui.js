@@ -40,7 +40,8 @@ if (global.React) {
 }
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./lib/common":2,"./lib/form":3,"./lib/input":4,"./lib/layout":5}],2:[function(require,module,exports){
-var cache = { id: 0 };
+var cache = { id: 0 },
+    reactBackboneAware = !!React.mixins.exists('modelFieldValidator');
 
 module.exports = function(React) {
   return {
@@ -108,6 +109,12 @@ module.exports = function(React) {
 
     init: function(exports, classData, options) {
       options = options || {};
+
+      // allow for special setup if https://github.com/jhudson8/react-backbone is installed
+      if (reactBackboneAware && options.ifReactBackbone) {
+        options.ifReactBackbone(options);
+      }
+
       var _mixins = exports.mixins;
       if (!exports.mixins) {
         _mixins = exports.mixins || {all: []};
@@ -115,16 +122,21 @@ module.exports = function(React) {
 
       function _init() {
         for (var name in classData) {
-          var data = classData[name];
+          var data = classData[name],
+              spec = {};
+          for (var _name in data) {
+            spec[_name] = data[_name];
+          }
           if (options.defaults) {
             for (var fName in options.defaults) {
-              if (!data[fName]) {
-                data[fName] = options.defaults[fName];
+              if (!spec[fName]) {
+                spec[fName] = options.defaults[fName];
               }
             }
           }
-          data.mixins = [data.mixins, _mixins[name], _mixins.all];
-          exports[name] = React.createClass(data);
+          options.mixins = options.mixins || {};
+          spec.mixins = [spec.mixins, _mixins[name], _mixins.all, options.mixins[name], options.mixins.all];
+          exports[name] = React.createClass(spec);
         }
       }
 
@@ -358,7 +370,14 @@ module.exports = function(React, common) {
     }
   };
 
-  common.init(exports, classData);
+  common.init(exports, classData, {
+    ifReactBackbone: function(options) {
+      options.mixins = {
+        Button: ['modelLoadOn'],
+        Form: ['modelAsyncListener']
+      };
+    }
+  });
 
   return exports;
 };
@@ -665,6 +684,44 @@ module.exports = function(React, form, common) {
       getDOMValue: function(el) {
         return $(el).val();
       }
+    },
+
+    ifReactBackbone: function(options) {
+      exports.defaultModelSetOptions = {validate: true, allowEmpty: true};
+      /**
+       * This mixin listenets for onChange events and set the associated model with that value.  If the
+       * model change succeeds, the "error" state attribute will be removed.
+       */
+      React.mixins.add('modelChangeSetter', {
+        modifyInputFieldProps: function (props) {
+          var onChange = props.onChange,
+            model = this.getModel(),
+            key = props.key;
+          if (props.set === undefined || props.set === true) {
+            props.set = exports.defaultModelSetOptions;
+            if (props.set) {
+              var self = this;
+              props.onChange = function (event) {
+                var model = self.getModel();
+                if (model) {
+                  var value = self.getDOMValue(event.currentTarget);
+                  if (self.setModelValue(value, props.set) !== false) {
+                    // we did not encounter a validation error
+                    if (self.state && self.state.error) {
+                      self.setState({error: false});
+                    }
+                  }
+                  if (onChange) {
+                    onChange.call(self, event);
+                  }
+                }
+              };
+            }
+          }
+          return props;
+        }
+      }, 'modelValueAccessor', 'modelEventBinder');
+      options.mixins = {all: ['modelChangeSetter', 'modelFieldValidator']};
     }
   });
 
@@ -679,10 +736,20 @@ module.exports = function(React, common) {
     },
 
     valueRetriever: function(column, entry) {
+      if (entry.get) {
+        return entry.get(column.key);
+      }
       return entry[column.key];
     },
 
+    keyRetriever: function(entry) {
+      return entry.id || entry.key;
+    },
+
     entriesRetriever: function(entries) {
+      if (entries.models) {
+        return entries.models;
+      }
       return entries;
     }
   };
@@ -918,8 +985,8 @@ module.exports = function(React, common) {
           }
         }
         var children = items.map(function(item) {
-          return React.DOM.a({className: common.mergeClassNames((item.key === activeKey) && 'active', 'item', item.className), href: item.key,
-              onClick: common.eventBinder(item, 'onChange', self, true)}, item.icon ? React.DOM.i({className: item.icon + ' icon'}) : undefined, item.label);
+          return React.DOM.a({className: common.mergeClassNames((item.key === activeKey) && 'active', 'item', item.className), href: item.href || item.key,
+              onClick: item.href ? props.onClick : common.eventBinder(item, 'onChange', self, true)}, item.icon ? React.DOM.i({className: item.icon + ' icon'}) : undefined, item.label);
         });
 
         return React.DOM.div({className: common.mergeClassNames('ui menu', props.className)},
@@ -932,6 +999,9 @@ module.exports = function(React, common) {
         if (item.activate) {
           item.activate();
         }
+      },
+      setActive: function(key) {
+        this.setState({active: key});
       }
     },
 
@@ -1000,16 +1070,17 @@ module.exports = function(React, common) {
                 if (typeof cellClassName === 'function') {
                   cellClassName = cellClassName.call(self, value, col);
                 }
+                index++;
+                if (col.formatter) {
+                  value = col.formatter.call(this, value, entry, index, col);
+                }
                 if (col.factory) {
-                  value = col.factory.call(this, value, index++, col);
+                  value = col.factory.call(this, value, entry, index, col);
                 }
-                else if (col.formatter) {
-                  value = col.formatter.call(this, value, index++, col);
-                }
-                return React.DOM.td({className: cellClassName}, value);
+                return React.DOM.td({className: cellClassName, key: col.key}, value);
               });
               var className = props.rowClassName && props.rowClassName.call(this, entry);
-              return React.DOM.tr({className: className}, cells);
+              return React.DOM.tr({className: className, key: exports.keyRetriever(entry)}, cells);
             });
 
         return React.DOM.table({className: common.mergeClassNames('ui table', props.className)},

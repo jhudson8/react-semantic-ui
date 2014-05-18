@@ -1,1 +1,3 @@
-/*! [react-semantic-ui](https://github.com/jhudson8/react-semantic-ui) v0.1.1;  MIT license; Joe Hudson<joehud_AT_gmail.com> */
+/*!
+ * https://github.com/jhudson8/react-semantic-ui v0.1.1;  MIT license; Joe Hudson<joehud_AT_gmail.com>
+ */

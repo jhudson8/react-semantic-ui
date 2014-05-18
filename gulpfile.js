@@ -16,7 +16,7 @@ var packageInfo = JSON.parse(fs.readFileSync('./package.json', {encoding: 'utf-8
     versionMatcher = new RegExp(name + ' v[0-9\.]+');
 
 headerContent = headerContent.replace(versionMatcher, name + ' v' + version);
-headerMinContent = headerContent.replace(versionMatcher, name + ' v' + version);
+headerMinContent = headerMinContent.replace(versionMatcher, name + ' v' + version);
 
 function build() {
   var pipeline = gulp.src('./index.js')
