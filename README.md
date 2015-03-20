@@ -43,5 +43,4 @@ See the [documentation](https://github.com/jhudson8/react-semantic-ui/tree/maste
 * [jhudson8/react-backbone](https://github.com/jhudson8/react-backbone)
 * [jhudson8/react-events](https://github.com/jhudson8/react-events)
 * [jhudson8/react-chartjs](https://github.com/jhudson8/react-chartjs)
-* [jhudson8/react-css-builder](https://github.com/jhudson8/react-css-builder)
-* [jhudson8/gulp-mocha-tdd](https://github.com/jhudson8/gulp-mocha-tdd) (React friendly)
+
